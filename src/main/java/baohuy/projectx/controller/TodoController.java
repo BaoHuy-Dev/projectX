@@ -2,8 +2,12 @@ package baohuy.projectx.controller;
 
 import baohuy.projectx.entity.Todo;
 import baohuy.projectx.service.TodoService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class TodoController {
@@ -13,29 +17,37 @@ public class TodoController {
         this.todoService = todoService;
     }
 
-    @GetMapping("/create-todo")
-    public String create() {
-        Todo myTodo = new Todo("baohuy", true);
-        Todo newTodo = this.todoService.handleCreateTodo(myTodo);
-        return "create todo with id = " + newTodo.getId();
+
+    @GetMapping("/todos/{id}")
+    public ResponseEntity<Todo> getTodoById(@PathVariable Long id) {
+        Todo todoData = this.todoService.getTodoById(id);
+        return ResponseEntity.ok().body(todoData);
     }
+
+
 
     @GetMapping("/todos")
-    public String getTodos() {
-        this.todoService.handleGetTodo();
-        return "get todos";
+    public ResponseEntity<List<Todo>> getTodos() {
+        List<Todo> listTodo = this.todoService.handleGetTodo();
+        return ResponseEntity.ok().body(listTodo);
     }
 
-    @GetMapping("/update-todo")
-    public String updateTodo() {
-        this.todoService.handleUpdateTodo();
-        return "update todo";
+    @PostMapping("/todos")
+    public ResponseEntity<Todo> createTodo(@RequestBody Todo input) {
+        Todo newTodo = this.todoService.handleCreateTodo(input);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newTodo);
     }
 
-    @GetMapping("/delete-todo")
-    public String deleteTodo() {
-        this.todoService.handleDeleteTodo();
-        return "delete Todo";
+    @PutMapping("/todos/{id}")
+    public ResponseEntity<String> updateTodo(@PathVariable Long id, @RequestBody Todo input) {
+        this.todoService.handleUpdateTodo(id, input);
+        return ResponseEntity.ok().body("update success");
+    }
+
+    @DeleteMapping("/todos/{id}")
+    public ResponseEntity<String> deleteTodo(@PathVariable Long id) {
+        this.todoService.handleDeleteTodo(id);
+        return ResponseEntity.ok().body("delete a todo with id " + id);
     }
 
 

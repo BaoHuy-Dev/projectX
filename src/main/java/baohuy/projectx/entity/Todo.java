@@ -9,14 +9,14 @@ public class Todo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     String username;
-    boolean isComplete;
+    boolean isCompleted;
 
     public Todo() {
     }
 
-    public Todo(String username, boolean isComplete) {
+    public Todo(String username, boolean isCompleted) {
         this.username = username;
-        this.isComplete = isComplete;
+        this.isCompleted = isCompleted;
     }
 
     @Override
@@ -24,16 +24,8 @@ public class Todo {
         return "Todo{" +
                 "id=" + id +
                 ", username='" + username + '\'' +
-                ", isComplete=" + isComplete +
+                ", isCompleted=" + isCompleted +
                 '}';
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public Long getId() {
@@ -44,11 +36,19 @@ public class Todo {
         this.id = id;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+    public String getUsername() {
+        return username;
     }
 
-    public void setComplete(boolean complete) {
-        isComplete = complete;
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 }
